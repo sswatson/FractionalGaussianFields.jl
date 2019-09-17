@@ -85,7 +85,7 @@ function between(a::Real,b::Real)
     end
 end
 
-function domainapprox(loop::Array{AsyPlots.Vec2,1},N::Integer)
+function domainapprox(loop::Array{<:AsyPlots.Vec2,1},N::Integer)
     mx = minimum(v.x for v in loop)
     my = minimum(v.y for v in loop)
     Mx = maximum(v.x for v in loop)
@@ -186,8 +186,8 @@ function solvelaplace(G::SquareGrid,
             b[k] = Δvals(v...)
         end
     end
-    A = sparse(I,J,V)
-    soln = lufact(A) \ b
+    A = SparseArrays.sparse(I,J,V)
+    soln = LinearAlgebra.lu(A) \ b
     h = zeros(m,n)
     for (k,v) in vertexmap
         h[k...] = soln[v]

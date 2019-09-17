@@ -2,7 +2,11 @@ __precompile__(true)
 
 module FractionalGaussianFields
 
-import Contour,
+import LinearAlgebra,
+       Random,
+       SparseArrays,
+       Contour,
+       FFTW, 
        Interpolations,
        LightGraphs,
        AsyPlots
@@ -39,7 +43,7 @@ with periodic boundary conditions
 function torus_fgf(m::Integer,
                   n::Integer,
                   s::Real,
-                  rng=Base.Random.GLOBAL_RNG)
+                  rng=Random.GLOBAL_RNG)
     h = complex(zeros(m,n))
     for j = 1:m
         for k = 1:n
@@ -49,15 +53,15 @@ function torus_fgf(m::Integer,
                  1/(sin((j-1)*pi/m)^2+(sin((k-1)*pi/n))^2)^(s/2))
         end
     end
-    return real(n/sqrt(2)*ifft(h))
+    return real(n/sqrt(2)*FFTW.ifft(h))
 end
 
-torus_fgf(n::Integer,s::Real,rng=Base.Random.GLOBAL_RNG) = torus_gff(n,n,s)
+torus_fgf(n::Integer,s::Real,rng=Random.GLOBAL_RNG) = torus_gff(n,n,s)
 
-torus_gff(m::Integer,n::Integer,rng=Base.Random.GLOBAL_RNG) =
+torus_gff(m::Integer,n::Integer,rng=Random.GLOBAL_RNG) =
     torus_fgf(m,n,1,rng)
 
-torus_gff(n::Integer,rng=Base.Random.GLOBAL_RNG) = torus_gff(n,n)
+torus_gff(n::Integer,rng=Random.GLOBAL_RNG) = torus_gff(n,n)
 
 using DataStructures
 
@@ -84,7 +88,7 @@ function laplacian(G::SquareGrid,bvertices::Set)
             end
         end
     end
-    sparse(I,J,V), vertexmap
+    SparseArrays.sparse(I,J,V), vertexmap
 end
 
 function fgf(G::SquareGrid,s::Real,bvertices::Set)

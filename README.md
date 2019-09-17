@@ -20,14 +20,14 @@ L = 40
 C = Colors.colormap("Blues",L)
 cairo() # the Cairo backend to AsyPlots is faster
 Plot([Path(flowline(h, z0, χ, θ),color=c) for (θ,c) in
-		       zip(linspace(0,2π,L),C)],bgcolor="Black",border=0)
+		       zip(range(0,2π,length=L),C)],bgcolor="Black",border=0)
 ```
 
 ![](images/flowlines.png)
 
 ```julia
 using AsyPlots, FractionalGaussianFields
-P = [(1+cos(8θ)/8)*cis(θ) for θ=linspace(0,2π,500)]
+P = [(1+cos(8θ)/8)*cis(θ) for θ=range(0,2π,length=500)]
 loop = Path(P).points
 n = 200
 Δvals(i,j) = (i,j) == (120,120) ? 1 : 0
