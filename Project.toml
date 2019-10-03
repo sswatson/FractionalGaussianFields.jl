@@ -2,6 +2,9 @@ name = "FractionalGaussianFields"
 uuid = "12b1f071-75ca-5403-9634-55c067809894"
 version = "0.1.1"
 
+[compat]
+julia = "1"
+
 [deps]
 AsyPlots = "77e5a97a-5ef9-58df-9d21-21957d92d960"
 Contour = "d38c429a-6771-53c6-b99e-75d170b6e991"
